@@ -18,6 +18,19 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 class UserService {
+    createPartner(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { name, email, password } = user;
+            const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
+            const partner = new models_user_1.default({
+                name,
+                email,
+                password: hashedPassword,
+                role: "partner",
+            });
+            return yield partner.save();
+        });
+    }
     createUser(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, email, password } = userInput;
@@ -47,11 +60,13 @@ class UserService {
     }
     linkPartner(userId, partnerId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield models_user_1.default.findById({ userId });
-            const partner = partnerId ? yield models_user_1.default.findById({ partnerId }) : null;
+            const user = yield models_user_1.default.findById(userId);
+            const partner = yield models_user_1.default.findById(partnerId);
             if (!user || !partner) {
                 throw new Error("Usre or Partner not found");
             }
+            if (partner.role !== "partner")
+                throw new Error("Target accout is not a prtner");
             if (user.partner || partner.partner) {
                 throw new Error("User or Partner already has a partner");
             }

@@ -7,3 +7,5 @@ router.post("/link-partner", UserController.linkPartner);
 router.put("/unlink-partner", UserController.unlinkPartner);
 
 export default router;
+
+

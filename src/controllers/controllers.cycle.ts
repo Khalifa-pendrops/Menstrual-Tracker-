@@ -51,6 +51,7 @@ class CycleControllers {
     }
   }
 
+  
   async deleteCycleEntry(req: Request, res: Response) {
     try {
       const { cycleId } = req.params;
@@ -68,3 +69,5 @@ class CycleControllers {
 }
 
 export default new CycleControllers();
+
+

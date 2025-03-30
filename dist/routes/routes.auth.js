@@ -8,4 +8,5 @@ const controllers_auth_1 = __importDefault(require("../controllers/controllers.a
 const router = express_1.default.Router();
 router.post("/signup", controllers_auth_1.default.signup);
 router.post("/login", controllers_auth_1.default.login);
+router.post("/signup/partner", controllers_auth_1.default.signupPartner);
 exports.default = router;

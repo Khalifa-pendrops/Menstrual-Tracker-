@@ -9,3 +9,4 @@ router.put("/updateCycleEntry", CycleController.updateCycleEntry);
 router.delete("/deleteCycleEntry", CycleController.deleteCycleEntry);
 
 export default router;
+

@@ -18,6 +18,7 @@ class CycleServices {
     return await cycle.save();
   }
 
+  
   async getCyclesByUser(userId: string): Promise<ICycle[]> {
     return await Cycle.find({ userId });
   }
@@ -58,3 +59,4 @@ class CycleServices {
 }
 
 export default new CycleServices();
+

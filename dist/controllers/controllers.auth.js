@@ -14,6 +14,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const services_user_1 = __importDefault(require("../services/services.user"));
 class AuthenticationController {
+    signupPartner(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const signupData = req.body;
+                const partner = yield services_user_1.default.createPartner(signupData);
+                res.status(201).json({
+                    success: true,
+                    message: "Partner successfully signed up! 🎉",
+                    data: { id: partner._id, signupData },
+                });
+            }
+            catch (err) {
+                res.status(500).json({
+                    success: false,
+                    message: "Error creating partner ⛔",
+                });
+            }
+        });
+    }
     signup(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -22,6 +41,7 @@ class AuthenticationController {
                 res.status(201).json({
                     success: true,
                     message: "User created successfully 🎉",
+                    data: user,
                 });
             }
             catch (err) {

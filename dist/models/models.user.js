@@ -8,6 +8,7 @@ const userSchema = new mongoose_1.default.Schema({
     name: { type: "string", required: true },
     email: { type: "string", required: true, unique: true },
     password: { type: "string", required: true, unique: true },
+    role: { type: "string", enum: ["user", "partner"], default: "user" },
     partner: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "User" },
 });
 exports.default = mongoose_1.default.model("User", userSchema);

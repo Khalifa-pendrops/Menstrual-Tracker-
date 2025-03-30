@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import User from "../models/models.user";
-import { UserInput, IUser, LoginInput } from "../types/user";
+import { UserInput, IUser, LoginInput, PartnerInput } from "../types/user";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
@@ -8,6 +8,19 @@ import dotenv from "dotenv";
 dotenv.config();
 
 class UserService {
+  async createPartner(user: PartnerInput): Promise<IUser> {
+    const { name, email, password } = user;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const partner = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role: "partner",
+    });
+    return await partner.save();
+  }
+
   async createUser(userInput: UserInput): Promise<IUser> {
     const { name, email, password } = userInput;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,12 +51,15 @@ class UserService {
   }
 
   async linkPartner(userId: string, partnerId: string): Promise<void> {
-    const user = await User.findById({ userId });
-    const partner = partnerId ? await User.findById({ partnerId }) : null;
+    const user = await User.findById( userId );
+    const partner = await User.findById( partnerId );
 
     if (!user || !partner) {
       throw new Error("Usre or Partner not found");
     }
+
+    if (partner.role !== "partner")
+      throw new Error("Target accout is not a prtner");
 
     if (user.partner || partner.partner) {
       throw new Error("User or Partner already has a partner");
